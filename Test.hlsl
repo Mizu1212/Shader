@@ -73,13 +73,13 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
 	if (isTexture)
 	{
-		diffuse = tex.Sample(smp, inData.uv)* texToon.Sample(smp, uv);
+		diffuse = tex.Sample(smp, inData.uv)*S;
 		ambient = tex.Sample(smp, inData.uv) * ambientcolor;
 		//ambient = tex.Sample(smp, inData.uv) *0.2;
 	}
     else
     {
-		diffuse = diffusecolor* texToon.Sample(smp, uv);
+		diffuse = diffusecolor* S;
 		ambient = diffusecolor * ambientcolor;
 		//ambient = diffusecolor * 0.2;
     }

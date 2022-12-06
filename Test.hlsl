@@ -71,18 +71,25 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	float4 R = reflect(light, inData.normal);
 	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
+
+	float alpha;
+
 	if (isTexture)
 	{
 		diffuse = tex.Sample(smp, inData.uv)*S;
 		ambient = tex.Sample(smp, inData.uv) * ambientcolor;
+		alpha = tex.Sample(smp, inData.uv).a;
 		//ambient = tex.Sample(smp, inData.uv) *0.2;
 	}
     else
     {
 		diffuse = diffusecolor* S;
 		ambient = diffusecolor * ambientcolor;
+		alpha = diffusecolor.a;
 		//ambient = diffusecolor * 0.2;
     }
 	
-	return diffuse /*+ ambient*/ + specular;
+	float4 result = diffuse + ambient + specular;
+	result.a = alpha;
+	return result;
 }

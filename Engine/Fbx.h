@@ -18,6 +18,7 @@ class Fbx
 	struct MATERIAL
 	{
 		Texture* pTexture;   //Texture型のポインタ
+		Texture* pTextureNormal;   //Texture型のポインタ
 		XMFLOAT4	diffuse; //マテリアル　元のカラー
 		XMFLOAT4    ambient;
 		XMFLOAT4    specular;
@@ -50,6 +51,7 @@ class Fbx
 		XMVECTOR position; //ポジション
 		XMVECTOR uv;       //テクスチャの座標
 		XMVECTOR normal;   //法線
+		XMVECTOR tangent;
 	};
 
 	Texture* pTexToon_;

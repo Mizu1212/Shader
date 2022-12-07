@@ -160,5 +160,6 @@
     <FxCompile Include="Simple2D.hlsl" />
     <FxCompile Include="Simple3D.hlsl" />
     <FxCompile Include="Test.hlsl" />
+    <FxCompile Include="NormalMap.hlsl" />
   </ItemGroup>
 </Project>

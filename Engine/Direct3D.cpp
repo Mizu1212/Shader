@@ -186,7 +186,7 @@ HRESULT Direct3D::InitShader3D()
 
 	// 頂点シェーダの作成（コンパイル）
 	ID3DBlob* pCompileVS = nullptr;//コンパイルした結果が入る
-	D3DCompileFromFile(L"Test.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	D3DCompileFromFile(L"NormalMap.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
 	assert(pCompileVS != nullptr);
 
 	 hr = pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &shaderbundle[SHADER_3D].pVertexShader);
@@ -202,6 +202,7 @@ HRESULT Direct3D::InitShader3D()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(XMVECTOR)*0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, sizeof(XMVECTOR)*1,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//UV
 		{ "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(XMVECTOR)*2,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//法線
+		{ "TANGENT",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(XMVECTOR)*3,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//法線
 	};
 	hr = pDevice->CreateInputLayout(layout, sizeof(layout)/sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &shaderbundle[SHADER_3D].pVertexLayout);//第二引数には上で作った個数が入る
 	if (FAILED(hr))
@@ -215,7 +216,7 @@ HRESULT Direct3D::InitShader3D()
 
 	// ピクセルシェーダの作成（コンパイル）
 	ID3DBlob* pCompilePS = nullptr;
-	D3DCompileFromFile(L"Test.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	D3DCompileFromFile(L"NormalMap.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
 	assert(pCompilePS != nullptr);
 	hr = pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &shaderbundle[SHADER_3D].pPixelShader);
 	if (FAILED(hr))

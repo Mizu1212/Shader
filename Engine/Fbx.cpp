@@ -301,7 +301,7 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		//ノーマルテクスチャ
 		{
 			//テクスチャ情報
-			FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sNormalMap);
+			FbxProperty  lProperty = pMaterial->FindProperty(FbxSurfaceMaterial::sBump);
 
 			//テクスチャの数
 			int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();

@@ -23,24 +23,41 @@ struct VS_OUT
 	float2 uv  : TEXCOORD;
 	float4 normal : NORMAL;
 	float4 V : TEXCOORD1;
+	float4 light : TEXCOORD2;
 
 };
 
 //頂点シェーダー
-VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)//:セマンティクスは何の情報か　
+VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, float4 tangent : TANGENT)//:セマンティクスは何の情報か　
 {
 	VS_OUT outData;
 	outData.pos = mul(pos, matWVP);   //ベクトルを行列にする関数
 	outData.uv = uv;
 
+	float3 binormal = cross(normal, tangent);
+	
+
 	normal.w = 0;
+	normal = mul(normal, matNormal);
+	normal = normalize(normal);
 
-	outData.normal = mul(normal, matNormal);
-	outData.normal = normalize(outData.normal);
+    tangent.w = 0;
+	tangent = mul(tangent, matNormal);
+	tangent = normalize(tangent);
 
-	outData.V = normalize(mul(pos, matW) - camPos);
+	binormal = mul(binormal, matNormal);
+	binormal = normalize(binormal);
 
+	float4 eye = normalize(mul(pos, matW) - camPos);
+	outData.V.x = dot(eye, tangent);
+	outData.V.y = dot(eye, binormal);
+	outData.V.z = dot(eye, normal);
 
+	float4 light = float4(1, 1, -1, 0);//ライト
+	light = normalize(light);
+	outData.light.x = dot(light, tangent);
+	outData.light.y = dot(light, binormal);
+	outData.light.z = dot(light, normal);
 
 	return outData;
 }
@@ -53,10 +70,12 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	float4 ambient;
 	float4 specular;
 
-	float4 light = float4(1, 1, -1, 0);//ライト
-	light = normalize(light);
+	float4 normal = texNormal.Sample(smp, inData.uv) * 2 - 1;
+	normal.w = 0;
+	normal = normalize(normal);
+	
 
-	float4 S = dot(inData.normal, light);//内積
+	float4 S = dot(normal, inData.light);//内積
 	S = clamp(S, 0, 1);
 	/*if (S.r < 0.3)
 		S = 0.3;
@@ -67,7 +86,7 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	uv.y = 0;
 	//return texToon.Sample(smp, uv);
 
-	float4 R = reflect(light, inData.normal);
+	float4 R = reflect(inData.light, normal);
 	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
 	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
 

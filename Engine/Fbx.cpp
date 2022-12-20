@@ -355,9 +355,12 @@ HRESULT Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 //描画
 void Fbx::Draw(Transform& transform)
 {
+	static float scroll = 0.0f;
+	scroll += 0.001f;
+
 	Direct3D::SetShader(SHADER_3D);
 	
-
+	
 
 	//頂点バッファ
 	UINT stride = sizeof(VERTEX);
@@ -405,7 +408,6 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext->PSSetShaderResources(0, 1, &pSRV);
 			
 		}
-
 		if (pMaterialList_[i].pTextureNormal) {
 
 			
@@ -413,6 +415,7 @@ void Fbx::Draw(Transform& transform)
 			Direct3D::pContext->PSSetShaderResources(1, 1, &pSRV);
 
 		}
+		cb.scroll = scroll;
 		//ID3D11ShaderResourceView* pSRVToon = pTexToon_->GetSRV();
 		//Direct3D::pContext->PSSetShaderResources(1, 1, &pSRVToon);
 

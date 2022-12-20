@@ -161,5 +161,6 @@
     <FxCompile Include="Simple3D.hlsl" />
     <FxCompile Include="Test.hlsl" />
     <FxCompile Include="NormalMap.hlsl" />
+    <FxCompile Include="WaterShader.hlsl" />
   </ItemGroup>
 </Project>

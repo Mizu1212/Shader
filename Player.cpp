@@ -25,7 +25,7 @@ void Player::Initialize()
     transform_.scale_.z = 1;
     
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\Ball.fbx");
+    hModel_ = Model::Load("Assets\\Water.fbx");
     assert(hModel_ >= 0);
     //Instantiate<MiniOden>(this);
 }
@@ -33,7 +33,7 @@ void Player::Initialize()
 //更新
 void Player::Update()
 {
-    transform_.rotate_.y++;
+    //transform_.rotate_.y++;
    /* if (Input::IsKey(DIK_A))
     {
         transform_.position_.x -= 0.1f;

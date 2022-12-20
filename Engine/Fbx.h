@@ -37,6 +37,7 @@ class Fbx
 		XMFLOAT4 specularcolor;
 		XMFLOAT4 camPos;
 		float shiness;
+		float scroll;
 		int      isTexture;
 		
 		

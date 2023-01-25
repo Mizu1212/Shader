@@ -4,7 +4,7 @@
 #include <string>
 #include "Transform.h"
 #include"Macro.h"
-
+#include"Direct3D.h"
 //リンカ
 #pragma comment(lib, "LibFbxSDK-MT.lib")
 #pragma comment(lib, "LibXml2-MT.lib")
@@ -38,6 +38,7 @@ class Fbx
 		XMFLOAT4 camPos;
 		float shiness;
 		float scroll;
+		float       movepos;
 		int      isTexture;
 		
 		
@@ -46,6 +47,7 @@ class Fbx
 		//XMFLOAT4    diffuseColor; //マテリアルの色
 		//int		isTexture;		  // テクスチャ貼ってあるかどうか
 	};
+	
 	//頂点
 	struct VERTEX
 	{
@@ -64,14 +66,15 @@ class Fbx
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11Buffer** pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
+	ID3D11Buffer* pConstantBuffer_2;
 	MATERIAL* pMaterialList_; //MATERIAL型のポインタ
-	
+	SHADER_TYPE Type_;
 public:
 	//コンストラクタ
 	Fbx();                
 	//ロード
 	//引数　第一引数ファイルの名前
-	HRESULT Load(std::string fileName);
+	HRESULT Load(std::string fileName, SHADER_TYPE Type_);
 	//描画
 	//引数　第一引数Transform型のポインタ
 	void    Draw(Transform& transform);

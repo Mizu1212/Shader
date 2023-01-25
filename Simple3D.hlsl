@@ -11,10 +11,15 @@ SamplerState	g_sampler : register(s0);	//サンプラー
 cbuffer global
 {
 
-	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
-	float4x4	matNormal;	        //法線変更用行列
-	float4		diffuseColor;		// ディフューズカラー（マテリアルの色）
-	bool		isTexture;		// テクスチャ貼ってあるかどうか
+	float4x4 matWVP;   //行列を扱う型
+	float4x4 matNormal;
+	float4x4 matW;
+	float4   diffusecolor;    //マテリアルの色
+	float4   ambientcolor;
+	float4   specularcolor;
+	float4   camPos;
+	float   shiness;
+	bool     isTexture;//テクスチャが貼られているかどうか
 
 };
 
@@ -23,9 +28,10 @@ cbuffer global
 //───────────────────────────────────────
 struct VS_OUT
 {
-	float4 pos    : SV_POSITION;	//位置
-	float2 uv	: TEXCOORD;	        //UV座標
-	float4 color	: COLOR;	//色（明るさ）
+	float4 pos : SV_POSITION;
+	float2 uv  : TEXCOORD;
+	float4 normal : NORMAL;
+	float4 V : TEXCOORD1;
 };
 
 //───────────────────────────────────────
@@ -33,27 +39,18 @@ struct VS_OUT
 //───────────────────────────────────────
 VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)//セマンティクス　何の情報が入っているか
 {
-	//ピクセルシェーダーへ渡す情報
-
 	VS_OUT outData;
-
-	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
-
-	//スクリーン座標に変換し、ピクセルシェーダーへ
-
-	outData.pos = mul(pos, matWVP);
+	outData.pos = mul(pos, matWVP);   //ベクトルを行列にする関数
 	outData.uv = uv;
 
+	normal.w = 0;
 
-	//法線を回転
-	normal = mul(normal, matNormal);//nomalにmatWをかける
+	outData.normal = mul(normal, matNormal);
+	outData.normal = normalize(outData.normal);
 
-	float4 light = float4(0,1,-1,0);//光の進む方向とは逆のベクトル
-	light = normalize(light);//正規化
-	outData.color = clamp(dot(normal, light), 0, 1);//dotは内積を求める第一引数を第二引数、第三引数の間の数にする
+	outData.V = normalize(mul(pos, matW) - camPos);
 
 
-	//まとめて出力
 
 	return outData;
 }
@@ -63,13 +60,39 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)//
 //───────────────────────────────────────
 float4 PS(VS_OUT inData) : SV_Target
 {
-	if (isTexture) {
-	float4 diffuse = g_texture.Sample(g_sampler, inData.uv) * inData.color;//拡散反射光
-	float4 ambient = g_texture.Sample(g_sampler, inData.uv) * float4(0.4, 0.4, 0.4, 1);//環境光
-	return diffuse + ambient;
-	}
-    else
+	float4 diffuse;
+	float4 ambient;
+	float4 specular;
+
+	float4 light = float4(1, 1, -1, 0);//ライト
+	light = normalize(light);
+
+	float4 S = dot(inData.normal, light);//内積
+	S = clamp(S, 0, 1);
+	/*if (S.r < 0.3)
+		S = 0.3;
+	else
+		S = 1;*/
+	float2 uv;
+	uv.x = S;
+	uv.y = 0;
+	//return texToon.Sample(smp, uv);
+
+	float4 R = reflect(light, inData.normal);
+	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
+	//specular = pow(clamp(dot(R, inData.V), 0, 1), 10) * 3;
+	if (isTexture)
 	{
-		return diffuseColor * inData.color;
-    }
+		diffuse = g_texture.Sample(g_sampler, inData.uv); /** texToon.Sample(smp, uv);*/
+		/*ambient = g_texture.Sample(g_sampler, inData.uv) * ambientcolor;*/
+		//ambient = tex.Sample(smp, inData.uv) *0.2;
+	}
+	else
+	{
+		diffuse = diffusecolor; /** texToon.Sample(smp, uv);*/
+		/*ambient = diffusecolor * ambientcolor;*/
+		//ambient = diffusecolor * 0.2;
+	}
+
+	return diffuse +/*+ ambient +*/ specular;
 }

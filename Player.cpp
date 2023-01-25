@@ -20,12 +20,12 @@ void Player::Initialize()
 {
     
     transform_.position_.y = -2;
-    transform_.scale_.x = 1;
-    transform_.scale_.y = 1;
-    transform_.scale_.z = 1;
+    transform_.scale_.x = 2;
+    transform_.scale_.y = 2;
+    transform_.scale_.z = 2;
     
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\Water.fbx");
+    hModel_ = Model::Load("Assets\\water.fbx");
     assert(hModel_ >= 0);
     //Instantiate<MiniOden>(this);
 }

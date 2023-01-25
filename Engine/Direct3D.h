@@ -14,6 +14,10 @@ enum SHADER_TYPE
 {
 	SHADER_2D,
 	SHADER_3D,
+	SHADER_WATER,
+	SHADER_TEST,
+	SHADER_TOON,
+	SHADER_OUTLINE,
 	SHADER_MAX
 };
 
@@ -33,6 +37,9 @@ namespace Direct3D
 	HRESULT InitShader();
 	HRESULT InitShader3D();
 	HRESULT InitShader2D();
+	HRESULT InitShaderWATER();
+	HRESULT InitShaderTEST();
+	
 
 	//シェーダーを設定
 	//引数　第一引数シェードのタイプ

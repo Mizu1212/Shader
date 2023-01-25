@@ -4,6 +4,7 @@
 #include "Engine/SceneManager.h"
 #include"Engine/Input.h"
 #include"TestModel.h"
+#include"dounatu.h"
 
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
@@ -16,6 +17,7 @@ void PlayScene::Initialize()
 {
 	
 	Instantiate<Player>(this);
+	Instantiate<dounatu>(this);
 	//Instantiate<TestModel>(this);
 	
 }

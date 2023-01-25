@@ -74,15 +74,23 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 	float4 ambient;
 	float4 specular;
 
-
+	
 	float2 uv1 = inData.uv;
-	uv1.x += scroll;
-	//uv1.y += scroll;
+	if (inData.pos.y <= 0)
+	{
+		uv1.x += scroll;
+		uv1.y += scroll;
+	}
+	
 	float4 normal1 = texNormal.Sample(smp, uv1) * 2 - 1;
 
 	float2 uv2 = inData.uv;
-	uv2.x -= scroll * 0.3;
-	uv2.y -= scroll * 1.2;
+	if (inData.pos.y <= 0)
+	{
+		uv2.x -= scroll * 0.3;
+		uv2.y -= scroll * 1.2;
+	}
+	
 	float4 normal2 = texNormal.Sample(smp, uv2) * 2 - 1;
 
 	float4 normal = normal1 + normal2;

@@ -87,6 +87,9 @@
     <ClCompile Include="GameStartScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="dounatu.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Camera.h">
@@ -155,6 +158,9 @@
     <ClInclude Include="GameStartScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="dounatu.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple2D.hlsl" />
@@ -162,5 +168,6 @@
     <FxCompile Include="Test.hlsl" />
     <FxCompile Include="NormalMap.hlsl" />
     <FxCompile Include="WaterShader.hlsl" />
+    <FxCompile Include="Toon.hlsl" />
   </ItemGroup>
 </Project>

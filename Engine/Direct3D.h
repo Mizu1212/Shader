@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <DirectXMath.h>
 #include"Macro.h"
+#include"Texture.h"
 using namespace DirectX;
 
 //リンカ
@@ -12,10 +13,10 @@ using namespace DirectX;
 //シェードのタイプ
 enum SHADER_TYPE 
 {
-	SHADER_2D,
 	SHADER_3D,
-	SHADER_WATER,
+	SHADER_2D,
 	SHADER_TEST,
+	SHADER_WATER,
 	SHADER_TOON,
 	SHADER_OUTLINE,
 	SHADER_MAX
@@ -28,7 +29,7 @@ namespace Direct3D
 
 	extern ID3D11Device* pDevice;		//デバイス
 	extern ID3D11DeviceContext* pContext;	//デバイスコンテキスト
-
+	extern Texture* pToonTexture;
 	//初期化
 	//引数　第一引数ウィンドウの幅、第二引数ウィンドウの縦、第三引数ハンドルウィンドウ
 	HRESULT Initialize(int winW, int winH, HWND hWnd);
@@ -39,7 +40,8 @@ namespace Direct3D
 	HRESULT InitShader2D();
 	HRESULT InitShaderWATER();
 	HRESULT InitShaderTEST();
-	
+	HRESULT InitShaderTOON();
+	HRESULT InitShaderOUTLINE();
 
 	//シェーダーを設定
 	//引数　第一引数シェードのタイプ

@@ -13,6 +13,8 @@ cbuffer gloabl
 	float4   specularcolor;
 	float4   camPos;
 	float   shiness;
+	float		scroll;
+	float       movepos;
 	bool     isTexture;//テクスチャが貼られているかどうか
 
 };
@@ -24,6 +26,7 @@ struct VS_OUT
 	float4 normal : NORMAL;
 	float4 V : TEXCOORD1;
 	float4 light : TEXCOORD2;
+	float4 postrans   :TEXCOORD3;
 
 };
 
@@ -58,7 +61,7 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL, f
 	outData.light.x = dot(light, tangent);
 	outData.light.y = dot(light, binormal);
 	outData.light.z = dot(light, normal);
-
+	outData.postrans = pos;
 	return outData;
 }
 
@@ -106,8 +109,10 @@ float4 PS(VS_OUT inData) : SV_TARGET //SVは二次元 ピクセルシェーダーの引数は頂点
 		alpha = diffusecolor.a;
 		//ambient = diffusecolor * 0.2;
 	}
-
-	float4 result = diffuse + ambient + specular;
-	result.a = alpha;
-	return result;
+	if (-2 < movepos + inData.postrans.y)
+	{
+		float4 color = diffuse + specular + ambient;
+		return color;
+	}
+	return float4(0, 0, 0, 1);
 }

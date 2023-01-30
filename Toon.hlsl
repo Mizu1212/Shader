@@ -13,8 +13,9 @@ cbuffer gloabal	//FBX.hのCBと同じ順番
 	float4	 camPos;
 	float	shiness;
 	float		scroll;
-	bool		isTexture;
 	float       movepos;
+	bool		isTexture;
+	
 };
 
 struct VS_OUT
@@ -43,7 +44,6 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 	return outData;
 }
 
-//エントリーポイント	開始地点
 
 
 float4 PS(VS_OUT inData) : SV_Target
@@ -63,7 +63,7 @@ float4 PS(VS_OUT inData) : SV_Target
 	S = clamp(S, 0, 1);
 	
 	float4 R = reflect(light, inData.normal);
-	specular = pow(clamp(dot(R, inData.V), 0, 1), shiness) * specularcolor * 2;
+	specular = pow(clamp(dot(R, inData.eye), 0, 1), shiness) * specularcolor * 2;
 	float alpha;
 	if (isTexture)
 	{
@@ -73,7 +73,7 @@ float4 PS(VS_OUT inData) : SV_Target
 	}
 	else
 	{
-		diffuse *= diffusecolor*S;
+		diffuse = diffusecolor*S;
 		ambient = diffusecolor * ambientcolor;
 		alpha = diffusecolor.a;
 	}
@@ -84,9 +84,7 @@ float4 PS(VS_OUT inData) : SV_Target
 		return color;
 	}
 
-	float4 result = diffuse + ambient + specular;
-	result.a = alpha;
-	return result;
+	return float4(0, 0, 0, 1);
 
 }
 

@@ -19,9 +19,9 @@ void Ballet::Initialize()
     transform_.scale_.y = 0.3;
     transform_.scale_.z = 0.3;
     
-    //モデルデータのロード
-    hModel_ = Model::Load("Assets\\oden.fbx");
-    assert(hModel_ >= 0);
+    ////モデルデータのロード
+    //hModel_ = Model::Load("Assets\\oden.fbx");
+    //assert(hModel_ >= 0);
 
     SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 0.5f);
     AddCollider(collision);

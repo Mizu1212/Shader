@@ -25,8 +25,9 @@ void Player::Initialize()
     transform_.scale_.z = 2;
     
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\water.fbx");
+    hModel_ = Model::Load("Assets\\water.fbx",SHADER_WATER);
     assert(hModel_ >= 0);
+
     //Instantiate<MiniOden>(this);
 }
 

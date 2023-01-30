@@ -21,8 +21,8 @@ void MiniOden::Initialize()
     transform_.scale_.y = 0.3;
     transform_.scale_.z = 0.3;
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\oden.fbx");
-    assert(hModel_ >= 0);
+   /* hModel_ = Model::Load("Assets\\oden.fbx");
+    assert(hModel_ >= 0);*/
 }
 
 //更新

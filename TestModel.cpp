@@ -23,8 +23,8 @@ void TestModel::Initialize()
     transform_.scale_.y = 0.5;
     transform_.scale_.z = 0.5;
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\oden.fbx");
-    assert(hModel_ >= 0);
+    /*hModel_ = Model::Load("Assets\\oden.fbx");
+    assert(hModel_ >= 0);*/
     
     SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 0.8f);
     AddCollider(collision);

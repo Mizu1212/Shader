@@ -19,6 +19,7 @@ Fbx::Fbx()
 //ロード
 HRESULT Fbx::Load(std::string fileName, SHADER_TYPE Type_)
 {
+	shaderType_ = Type_;
 	//マネージャを生成
 	FbxManager* pFbxManager = FbxManager::Create();
 
@@ -379,8 +380,8 @@ void Fbx::Draw(Transform& transform)
 {
 	
 	
-	
-		Direct3D::SetShader(Type_);
+	    static float scroll = 0.0f;
+		Direct3D::SetShader(shaderType_);
 		//頂点バッファ
 		//頂点バッファ
 		UINT stride = sizeof(VERTEX);
@@ -403,9 +404,6 @@ void Fbx::Draw(Transform& transform)
 
 
 			CONSTANT_BUFFER cb;
-			//cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
-			//cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());//影の付き方　法線
-			//cb.isTexture = pMaterialList_[i].pTexture != nullptr;
 			cb.matWVP = XMMatrixTranspose(transform.GetWorldMatrix() * Camera::GetViewMatrix() * Camera::GetProjectionMatrix());
 			cb.matW = XMMatrixTranspose(transform.GetWorldMatrix());
 			cb.matNormal = XMMatrixTranspose(transform.GetNormalMatrix());
@@ -414,14 +412,14 @@ void Fbx::Draw(Transform& transform)
 			cb.ambientcolor = pMaterialList_[i].ambient;
 			cb.specularcolor = pMaterialList_[i].specular;
 			cb.shiness = pMaterialList_[i].shiness;
-
-			if (Type_ == SHADER_WATER)
+			cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+			if (shaderType_ == SHADER_WATER)
 			{
-				static float scroll = 0.0f;
-				scroll += 0.001f;
+				//static float scroll = 0.0f;
+				scroll += 0.01f;
 				cb.scroll = scroll;
 			}
-			if (Type_ == SHADER_TEST)
+			if (shaderType_ == SHADER_TEST)
 			{
 				static float nowtrans = 0;
 				static float savetrans = 3;
@@ -452,7 +450,7 @@ void Fbx::Draw(Transform& transform)
 				Direct3D::pContext->PSSetShaderResources(1, 1, &pSRV);
 
 			}
-			if (Type_ == TOON)
+			if (shaderType_ == SHADER_TOON)
 			{
 				ID3D11ShaderResourceView* pSRV = Direct3D::pToonTexture->GetSRV();
 				Direct3D::pContext->PSSetShaderResources(1, 1, &pSRV);
@@ -467,7 +465,12 @@ void Fbx::Draw(Transform& transform)
 			//描画
 			Direct3D::pContext->DrawIndexed(polygonCount_ * 3, 0, 0);
 		}
-
+		if (shaderType_ == SHADER_OUTLINE)
+		{
+			shaderType_ = SHADER_TOON;
+			Draw(transform);
+			shaderType_ = SHADER_OUTLINE;
+		}
 	
 }
 //解放

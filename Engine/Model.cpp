@@ -12,7 +12,7 @@ namespace Model
 	}
 
 	//モデルをロード
-	int Load(std::string fileName)
+	int Load(std::string fileName,SHADER_TYPE Type_)
 	{
 		ModelData* pMData = new ModelData;//構造体のインスタンスを作成
 
@@ -33,7 +33,7 @@ namespace Model
 		if (isExist == false)
 		{
 			pMData->pFbx = new Fbx;//Fbxオブジェクトを作成し、ロードする
-			if (FAILED(pMData->pFbx->Load(fileName)))
+			if (FAILED(pMData->pFbx->Load(fileName, Type_)))
 			{
 				//開けなかった
 				SAFE_DELETE(pMData->pFbx);

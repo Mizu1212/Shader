@@ -3,6 +3,7 @@
 #include<string>
 #include"Fbx.h"
 #include"Transform.h"
+#include "Direct3D.h"
 namespace Model
 {
 	struct ModelData
@@ -24,7 +25,7 @@ namespace Model
     void Initialize();
 
     //çXêV
-    int Load(std::string fileName);
+    int Load(std::string fileName, SHADER_TYPE Type_);
 
     //ï`âÊ
     void Draw(int handle);

@@ -25,7 +25,7 @@ void dounatu::Initialize()
     transform_.scale_.z = 0.7;
 
     //モデルデータのロード
-    hModel_ = Model::Load("Assets\\Torus2.fbx");
+    hModel_ = Model::Load("Assets\\Torus2.fbx", SHADER_TEST);
     assert(hModel_ >= 0);
     //Instantiate<MiniOden>(this);
 }
@@ -33,7 +33,7 @@ void dounatu::Initialize()
 //更新
 void dounatu::Update()
 {
-    //transform_.rotate_.y++;
+    transform_.rotate_.y++;
     if (Input::IsKey(DIK_UP))
     {
         transform_.position_.y += 0.1f;

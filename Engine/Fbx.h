@@ -68,7 +68,7 @@ class Fbx
 	ID3D11Buffer* pConstantBuffer_;
 	ID3D11Buffer* pConstantBuffer_2;
 	MATERIAL* pMaterialList_; //MATERIAL型のポインタ
-	SHADER_TYPE Type_;
+	SHADER_TYPE shaderType_;
 public:
 	//コンストラクタ
 	Fbx();                
